@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { LayoutDashboard, Package, Stethoscope, User } from "lucide-react"
-import { createClient } from "@/lib/supabase/client"
+import { signOut } from "@/lib/services/auth"
 
 const NAV_ITEMS = [
   { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
@@ -18,10 +18,9 @@ interface SidebarProps {
 export function Sidebar({ displayName, email }: SidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
-  const supabase = createClient()
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut()
+    await signOut()
     router.push("/auth/login")
     router.refresh()
   }

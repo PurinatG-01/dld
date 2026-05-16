@@ -1,22 +1,22 @@
-import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { redirect } from "next/navigation"
+import { createClient } from "@/lib/supabase/server"
+import { getUserProfile } from "@/lib/services/user"
 import { Sidebar } from "@/components/layout/Sidebar"
 import { BottomNav } from "@/components/layout/BottomNav"
 
-export default async function AppLayout({ children }: { children: React.ReactNode }) {
+export default async function AppLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/auth/login')
+  if (!user) redirect("/auth/login")
 
-  // Look up the staff profile from the public schema by matching auth UUID
-  const { data: profile } = await supabase
-    .from('user')
-    .select('name, email')
-    .eq('id', user.id)
-    .single()
+  const profile = await getUserProfile(supabase, user.id)
 
-  const displayName = profile?.name ?? user.email ?? 'User'
-  const email = profile?.email ?? user.email ?? ''
+  const displayName = profile?.name ?? user.email ?? "User"
+  const email = profile?.email ?? user.email ?? ""
 
   return (
     <div className="min-h-screen bg-[#F9F9FF] flex font-sans selection:bg-indigo-100">

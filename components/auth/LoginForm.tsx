@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Stethoscope, Loader2 } from 'lucide-react'
-import { createClient } from '@/lib/supabase/client'
+import { signInWithEmail } from '@/lib/services/auth'
 
 export function LoginForm() {
   const [email, setEmail] = useState('')
@@ -11,15 +11,14 @@ export function LoginForm() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
-  const supabase = createClient()
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError(null)
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
-    if (error) {
-      setError(error.message)
+    const result = await signInWithEmail(email, password)
+    if (!result.success) {
+      setError(result.error)
       setLoading(false)
     } else {
       router.push('/dashboard')
