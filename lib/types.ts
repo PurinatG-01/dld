@@ -45,25 +45,42 @@ export type Supplier = {
 
 export type Item = {
   id: string
-  branch_id: string
   name: string
+  generic_name: string | null
+  brand: string | null
+  internal_sku: string | null
+  barcode_gtin: string | null
   category: string
+  subcategory: string | null
   unit_of_measure: string
+  pack_size: number | null
+  default_supplier_id: string | null
+  default_unit_cost: number | null
+  currency: string | null
+  par_level: number | null
   reorder_point: number | null
-  is_active: boolean
+  max_level: number | null
+  lead_time_days: number | null
+  is_controlled_drug: boolean
+  requires_refrigeration: boolean
+  is_serialized: boolean
   created_at: string
   updated_at: string
+  created_by: string | null
 }
 
 export type ItemStock = {
   id: string
   item_id: string
-  branch_location_id: string
-  inbound_session_id: string | null
+  location_id: string
   lot_number: string | null
+  serial_number: string | null
   expiry_date: string | null
-  quantity: number
-  unit_cost: number | null
+  manufacturing_date: string | null
+  received_date: string | null
+  quantity_on_hand: number
+  unit_cost_at_receipt: number | null
+  status: string
   created_at: string
   updated_at: string
 }
