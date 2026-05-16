@@ -1,43 +1,50 @@
-import { MOCK_PRODUCTS, MOCK_ITEMS } from './mock-data'
-import type { ItemStatus } from './types'
+import type { MovementType, Item, ItemStock, StockMovement } from "./types"
 
-describe('mock data shape', () => {
-  it('every product has required fields', () => {
-    for (const p of MOCK_PRODUCTS) {
-      expect(p.id).toBeDefined()
-      expect(p.name).toBeDefined()
-      expect(p.category).toBeDefined()
-      expect(p.unit).toBeDefined()
-      expect(typeof p.price).toBe('number')
-      expect(typeof p.minThreshold).toBe('number')
-    }
+describe("DB-aligned types", () => {
+  it("MovementType covers all expected variants", () => {
+    const types: MovementType[] = [
+      "INBOUND",
+      "WITHDRAWN",
+      "WASTAGE",
+      "TRANSFER",
+      "ADJUST",
+      "FLAG",
+      "UNFLAG",
+      "AUDIT",
+      "DISPOSE",
+    ]
+    expect(types).toHaveLength(9)
   })
 
-  it('every item has a valid status enum value', () => {
-    const validStatuses: ItemStatus[] = ['in_stock', 'dispensed', 'expired', 'damaged']
-    for (const item of MOCK_ITEMS) {
-      expect(validStatuses).toContain(item.status)
+  it("Item type has the expected shape", () => {
+    const item: Item = {
+      id: "test-id",
+      branch_id: "branch-id",
+      name: "Test Item",
+      category: "PPE",
+      unit_of_measure: "box",
+      reorder_point: 10,
+      is_active: true,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     }
+    expect(item.id).toBeDefined()
+    expect(item.branch_id).toBeDefined()
   })
 
-  it('every item references a valid product id', () => {
-    const productIds = new Set(MOCK_PRODUCTS.map(p => p.id))
-    for (const item of MOCK_ITEMS) {
-      expect(productIds.has(item.productId)).toBe(true)
+  it("ItemStock type accepts null optional fields", () => {
+    const stock: ItemStock = {
+      id: "stock-id",
+      item_id: "item-id",
+      branch_location_id: "loc-id",
+      inbound_session_id: null,
+      lot_number: null,
+      expiry_date: null,
+      quantity: 50,
+      unit_cost: null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     }
-  })
-
-  it('initial stock counts match prototype quantities', () => {
-    const countByProduct = MOCK_ITEMS.reduce<Record<string, number>>((acc, item) => {
-      if (item.status === 'in_stock') {
-        acc[item.productId] = (acc[item.productId] ?? 0) + 1
-      }
-      return acc
-    }, {})
-    expect(countByProduct['prod-1']).toBe(12)   // Composite A2
-    expect(countByProduct['prod-2']).toBe(45)   // Lidocaine
-    expect(countByProduct['prod-3']).toBe(3)    // Suture (low stock)
-    expect(countByProduct['prod-4']).toBe(2)    // Implant Kit (low stock)
-    expect(countByProduct['prod-5']).toBe(200)  // Sterilization Pouches
+    expect(stock.quantity).toBe(50)
   })
 })

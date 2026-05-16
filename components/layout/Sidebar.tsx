@@ -1,17 +1,13 @@
-'use client'
+"use client"
 
-import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
-import {
-  LayoutDashboard, Package, Activity, Settings, Stethoscope, User,
-} from 'lucide-react'
-import { createClient } from '@/lib/supabase/client'
+import Link from "next/link"
+import { usePathname, useRouter } from "next/navigation"
+import { LayoutDashboard, Package, Stethoscope, User } from "lucide-react"
+import { createClient } from "@/lib/supabase/client"
 
 const NAV_ITEMS = [
-  { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { href: '/inventory',  icon: Package,         label: 'Inventory'  },
-  { href: '/activity',   icon: Activity,         label: 'Live Logs'  },
-  { href: '/settings',   icon: Settings,         label: 'Settings'   },
+  { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
+  { href: "/inventory", icon: Package, label: "Inventory" },
 ]
 
 interface SidebarProps {
@@ -26,7 +22,7 @@ export function Sidebar({ displayName, email }: SidebarProps) {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()
-    router.push('/auth/login')
+    router.push("/auth/login")
     router.refresh()
   }
 
@@ -37,8 +33,12 @@ export function Sidebar({ displayName, email }: SidebarProps) {
           <Stethoscope size={22} />
         </div>
         <div className="hidden lg:block">
-          <h1 className="text-slate-900 font-bold text-lg leading-tight">DLD</h1>
-          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Clinical Ops</p>
+          <h1 className="text-slate-900 font-bold text-lg leading-tight">
+            DLD
+          </h1>
+          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+            Clinical Ops
+          </p>
         </div>
       </div>
 
@@ -51,8 +51,8 @@ export function Sidebar({ displayName, email }: SidebarProps) {
               href={href}
               className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
                 active
-                  ? 'bg-indigo-50 text-indigo-600 font-semibold'
-                  : 'text-slate-400 hover:bg-slate-50 hover:text-slate-600'
+                  ? "bg-indigo-50 text-indigo-600 font-semibold"
+                  : "text-slate-400 hover:bg-slate-50 hover:text-slate-600"
               }`}
             >
               <Icon size={20} />
@@ -64,11 +64,15 @@ export function Sidebar({ displayName, email }: SidebarProps) {
 
       <div className="p-4 mt-auto">
         <div className="bg-slate-50 rounded-2xl p-4 hidden lg:block border border-slate-100 mb-4">
-          <p className="text-[11px] text-slate-500 font-medium mb-2">Clinic Performance</p>
+          <p className="text-[11px] text-slate-500 font-medium mb-2">
+            Clinic Performance
+          </p>
           <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
             <div className="w-[85%] h-full bg-indigo-500" />
           </div>
-          <p className="text-[10px] text-slate-400 mt-2 font-bold uppercase">85% Capacity</p>
+          <p className="text-[10px] text-slate-400 mt-2 font-bold uppercase">
+            85% Capacity
+          </p>
         </div>
 
         <button
@@ -80,7 +84,9 @@ export function Sidebar({ displayName, email }: SidebarProps) {
             <User size={14} className="text-slate-400" />
           </div>
           <div className="hidden lg:block overflow-hidden">
-            <p className="text-xs font-bold text-slate-800 truncate">{displayName}</p>
+            <p className="text-xs font-bold text-slate-800 truncate">
+              {displayName}
+            </p>
             <p className="text-[10px] text-slate-400 truncate">{email}</p>
           </div>
         </button>
