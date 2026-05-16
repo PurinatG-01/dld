@@ -1,13 +1,13 @@
-'use client'
+"use client"
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { Stethoscope, Loader2 } from 'lucide-react'
-import { signInWithEmail } from '@/lib/services/auth'
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { Stethoscope, Loader2 } from "lucide-react"
+import { signInWithEmail } from "@/lib/services/auth"
 
 export function LoginForm() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
@@ -21,7 +21,7 @@ export function LoginForm() {
       setError(result.error)
       setLoading(false)
     } else {
-      router.push('/dashboard')
+      router.push("/dashboard")
       router.refresh()
     }
   }
@@ -34,13 +34,19 @@ export function LoginForm() {
             <Stethoscope size={22} />
           </div>
           <div>
-            <h1 className="text-slate-900 font-bold text-lg leading-tight">DLD</h1>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Clinical Ops</p>
+            <h1 className="text-slate-900 font-bold text-lg leading-tight">
+              DLD
+            </h1>
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+              Clinical Ops
+            </p>
           </div>
         </div>
 
         <h2 className="text-xl font-bold text-slate-900 mb-2">Welcome back</h2>
-        <p className="text-sm text-slate-400 mb-8">Sign in to your clinic account</p>
+        <p className="text-sm text-slate-400 mb-8">
+          Sign in to your clinic account
+        </p>
 
         {error && (
           <div className="mb-6 p-4 bg-rose-50 text-rose-600 text-sm rounded-2xl border border-rose-100">
@@ -53,7 +59,7 @@ export function LoginForm() {
             type="email"
             placeholder="Email address"
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             required
             className="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           />
@@ -61,7 +67,7 @@ export function LoginForm() {
             type="password"
             placeholder="Password"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             required
             className="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           />
@@ -70,7 +76,11 @@ export function LoginForm() {
             disabled={loading}
             className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-[1.5rem] text-sm font-bold transition-all disabled:opacity-50 flex items-center justify-center gap-2"
           >
-            {loading ? <Loader2 size={16} className="animate-spin" /> : 'Sign in'}
+            {loading ? (
+              <Loader2 size={16} className="animate-spin" />
+            ) : (
+              "Sign in"
+            )}
           </button>
         </form>
       </div>

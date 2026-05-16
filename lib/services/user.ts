@@ -2,7 +2,7 @@
  * user.ts — server-side user profile service
  * Only call from Server Components or Route Handlers (not client components).
  */
-import type { SupabaseClient } from '@supabase/supabase-js'
+import type { SupabaseClient } from "@supabase/supabase-js"
 
 export type UserProfile = {
   id: string
@@ -18,12 +18,12 @@ export type UserProfile = {
  */
 export async function getUserProfile(
   supabase: SupabaseClient,
-  userId: string
+  userId: string,
 ): Promise<UserProfile | null> {
   const { data, error } = await supabase
-    .from('user')
-    .select('id, name, email, role_id, branch_id')
-    .eq('id', userId)
+    .from("user")
+    .select("id, name, email, role_id, branch_id")
+    .eq("id", userId)
     .single()
 
   if (error || !data) return null
