@@ -17,11 +17,13 @@ import {
 } from "@/lib/services/inventory"
 
 const STATUS_STYLES: Record<string, string> = {
-  AVAILABLE: "bg-green-100 text-green-700",
-  RESERVED: "bg-yellow-100 text-yellow-700",
-  QUARANTINE: "bg-orange-100 text-orange-700",
-  EXPIRED: "bg-red-100 text-red-700",
-  DISPOSED: "bg-slate-100 text-slate-500",
+  pending:        "bg-muted text-muted-foreground",
+  in_stock:       "bg-emerald-100 text-emerald-700",
+  partially_used: "bg-amber-100 text-amber-700",
+  flagged:        "bg-orange-100 text-orange-700",
+  transferred:    "bg-blue-100 text-blue-700",
+  consumed:       "bg-muted text-muted-foreground",
+  disposed:       "bg-destructive/10 text-destructive",
 }
 
 function formatDate(iso: string | null) {
@@ -68,33 +70,33 @@ export default function ItemStockPage({
         {/* Back button */}
         <button
           onClick={() => router.back()}
-          className="flex items-center gap-1 text-slate-500 hover:text-slate-700 text-sm mb-6 transition-colors"
+          className="flex items-center gap-1 text-muted-foreground hover:text-primary text-sm mb-6 transition-colors"
         >
           <ChevronLeft size={16} />
           Back to Inventory
         </button>
 
         {loading && (
-          <div className="text-center text-slate-400 py-24">Loading…</div>
+          <div className="text-center text-muted-foreground py-24">Loading…</div>
         )}
 
-        {error && <div className="text-center text-red-500 py-24">{error}</div>}
+        {error && <div className="text-center text-destructive py-24">{error}</div>}
 
         {!loading && !error && data && (
           <>
             {/* Item header card */}
-            <div className="bg-white rounded-4xl shadow-sm border border-slate-100 p-6 mb-6">
+            <div className="bg-card rounded-xl shadow-xs border border-border p-6 mb-6">
               <div className="flex items-start gap-4">
-                <div className="p-3 rounded-2xl bg-indigo-50">
-                  <Package size={24} className="text-indigo-600" />
+                <div className="p-3 rounded-xl bg-primary/10">
+                  <Package size={24} className="text-primary" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h1 className="text-xl font-bold text-slate-900">
+                    <h1 className="text-xl font-bold text-card-foreground">
                       {data.item.name}
                     </h1>
                     {data.item.is_controlled_drug && (
-                      <span className="flex items-center gap-1 text-xs font-medium bg-red-100 text-red-700 px-2 py-0.5 rounded-full">
+                      <span className="flex items-center gap-1 text-xs font-medium bg-destructive/10 text-destructive px-2 py-0.5 rounded-full">
                         <ShieldAlert size={11} />
                         Controlled
                       </span>
@@ -107,16 +109,16 @@ export default function ItemStockPage({
                     )}
                   </div>
                   {data.item.generic_name && (
-                    <p className="text-sm text-slate-500 mt-0.5">
+                    <p className="text-sm text-muted-foreground mt-0.5">
                       {data.item.generic_name}
                     </p>
                   )}
                 </div>
                 <div className="text-right shrink-0">
-                  <p className="text-3xl font-bold text-slate-900">
+                  <p className="text-3xl font-bold text-card-foreground">
                     {totalQty}
                   </p>
-                  <p className="text-xs text-slate-400 mt-0.5">
+                  <p className="text-xs text-muted-foreground mt-0.5">
                     {data.item.unit_of_measure} total
                   </p>
                 </div>
@@ -175,24 +177,24 @@ export default function ItemStockPage({
             </div>
 
             {/* Stock batch table */}
-            <div className="bg-white rounded-4xl shadow-sm border border-slate-100 overflow-hidden">
-              <div className="px-6 py-4 border-b border-slate-100">
-                <h2 className="font-semibold text-slate-800">
+            <div className="bg-card rounded-xl shadow-xs border border-border overflow-hidden">
+              <div className="px-6 py-4 border-b border-border">
+                <h2 className="font-semibold text-card-foreground">
                   Stock batches
-                  <span className="ml-2 text-sm font-normal text-slate-400">
+                  <span className="ml-2 text-sm font-normal text-muted-foreground">
                     ({data.stocks.length})
                   </span>
                 </h2>
               </div>
 
               {data.stocks.length === 0 ? (
-                <div className="px-6 py-12 text-center text-slate-400 text-sm">
+                <div className="px-6 py-12 text-center text-muted-foreground text-sm">
                   No stock found at this branch
                 </div>
               ) : (
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-slate-100 text-left text-xs font-semibold text-slate-400 uppercase tracking-wide">
+                    <tr className="border-b border-border text-left text-xs font-semibold text-muted-foreground uppercase tracking-wide">
                       <th className="px-6 py-4">Location</th>
                       <th className="px-6 py-4">Lot / Serial</th>
                       <th className="px-6 py-4">Expiry</th>
@@ -229,17 +231,17 @@ function MetaField({
 }) {
   return (
     <div>
-      <p className="text-xs text-slate-400 font-medium uppercase tracking-wide">
+      <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide">
         {label}
       </p>
       <p
         className={`mt-0.5 font-medium flex items-center gap-1 ${
-          highlight ? "text-red-500" : "text-slate-700"
+          highlight ? "text-destructive" : "text-card-foreground"
         }`}
       >
         {icon}
         {value}
-        {highlight && <AlertTriangle size={13} className="text-red-400" />}
+        {highlight && <AlertTriangle size={13} className="text-destructive" />}
       </p>
     </div>
   )
@@ -250,21 +252,21 @@ function StockRow({ stock }: { stock: ItemStockRecord }) {
   const expired = stock.expiry_date && new Date(stock.expiry_date) < new Date()
 
   return (
-    <tr className="border-b border-slate-50 hover:bg-slate-50 transition-colors">
-      <td className="px-6 py-3 text-slate-700">
+    <tr className="border-b border-border hover:bg-muted/50 transition-colors">
+      <td className="px-6 py-3 text-card-foreground">
         {stock.location_name ?? stock.location_id}
       </td>
-      <td className="px-6 py-3 text-slate-500 font-mono text-xs">
+      <td className="px-6 py-3 text-muted-foreground font-mono text-xs">
         {stock.lot_number ?? stock.serial_number ?? "—"}
       </td>
       <td className="px-6 py-3">
         <span
           className={
             expired
-              ? "text-red-500 font-medium"
+              ? "text-destructive font-medium"
               : expiringSoon
                 ? "text-orange-500 font-medium"
-                : "text-slate-500"
+                : "text-muted-foreground"
           }
         >
           {formatDate(stock.expiry_date)}
@@ -273,10 +275,10 @@ function StockRow({ stock }: { stock: ItemStockRecord }) {
           )}
         </span>
       </td>
-      <td className="px-6 py-3 text-slate-400">
+      <td className="px-6 py-3 text-muted-foreground">
         {formatDate(stock.received_date)}
       </td>
-      <td className="px-6 py-3 text-right font-semibold text-slate-800">
+      <td className="px-6 py-3 text-right font-semibold text-card-foreground">
         {stock.quantity_on_hand}
       </td>
       <td className="px-6 py-3">
