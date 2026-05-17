@@ -63,7 +63,7 @@ export default function ItemStockPage({
     data?.stocks.reduce((sum, s) => sum + s.quantity_on_hand, 0) ?? 0
 
   return (
-    <div className="min-h-screen bg-dld-bg p-6 pb-24 md:pb-6">
+    <div className="min-h-screen bg-background p-6 pb-24 md:pb-6">
       <div className="max-w-5xl mx-auto">
         {/* Back button */}
         <button

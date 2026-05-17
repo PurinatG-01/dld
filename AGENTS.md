@@ -25,7 +25,6 @@ All colours and radius values come from CSS variables defined in `app/globals.cs
 - **Edit `:root`** to retheme shadcn components globally (e.g. `--primary` is DLD indigo-600)
 - **`@theme inline`** bridges those CSS vars to Tailwind utility classes (`bg-primary`, `text-muted-foreground`, etc.)
 - Do **not** use hardcoded Tailwind colour classes like `bg-indigo-600`, `text-slate-400`, or `border-rose-100` in new code — use semantic tokens (`bg-primary`, `text-muted-foreground`, `border-destructive/20`)
-- `--color-dld-bg` (`bg-dld-bg`) exists for legacy app-shell pages during migration; new pages use `bg-background`
 
 ## Edge functions
 

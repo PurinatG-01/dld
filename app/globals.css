@@ -13,25 +13,17 @@
 /*
  * THEME — Tailwind v4 CSS-variable bridge
  * ──────────────────────────────────────────────────────────────────────────
- * @theme inline tells Tailwind to expose the CSS vars below as utility
- * classes. For example:
- *   --color-primary  →  bg-primary, text-primary, border-primary …
- *   --radius-card    →  rounded-card
+ * @theme inline exposes CSS vars as Tailwind utility classes.
+ * For example: --color-primary → bg-primary, text-primary, border-primary …
  *
- * Two layers live here:
- *   1. DLD design tokens — defined with their values inline.
- *   2. shadcn semantic tokens — bridge to the :root CSS vars defined below.
- *      Shadcn components read from :root; Tailwind utilities read from here.
- *      Edit :root to retheme, not this block.
+ * Shadcn components read from :root; Tailwind utilities read from here.
+ * Edit :root to retheme — not this block.
  */
 @theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  /* ── 1. DLD design tokens ─────────────────────────────────────────────── */
-  --color-dld-bg: #f9f9ff; /* app-wide page background (legacy pages) */
-
-  /* ── 2. shadcn semantic colour tokens → Tailwind utilities ────────────── */
+  /* shadcn semantic colour tokens → Tailwind utilities */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);

@@ -10,6 +10,9 @@ import {
   ChevronUp,
   ChevronDown,
 } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Skeleton } from "@/components/ui/skeleton"
 import {
   listItems,
   type InventoryItem,
@@ -93,19 +96,19 @@ export default function InventoryPage() {
     if (col !== sortBy)
       return <ChevronUp size={12} className="opacity-20 ml-1 inline" />
     return sortDir === "asc" ? (
-      <ChevronUp size={12} className="ml-1 inline text-indigo-500" />
+      <ChevronUp size={12} className="ml-1 inline text-primary" />
     ) : (
-      <ChevronDown size={12} className="ml-1 inline text-indigo-500" />
+      <ChevronDown size={12} className="ml-1 inline text-primary" />
     )
   }
 
   return (
-    <div className="min-h-screen bg-[#F9F9FF] p-6 pb-24 md:pb-6">
+    <div className="min-h-screen bg-background p-6 pb-24 md:pb-6">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">
-          <Package size={20} className="text-indigo-600" />
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+          <Package size={20} className="text-primary" />
+          <h1 className="text-2xl font-bold text-foreground tracking-tight">
             Inventory
           </h1>
         </div>
@@ -115,40 +118,37 @@ export default function InventoryPage() {
           <div className="relative flex-1">
             <Search
               size={16}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
             />
-            <input
+            <Input
               type="text"
               placeholder="Search items…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+              className="pl-9"
             />
           </div>
-          <button
-            type="submit"
-            className="px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition-colors"
-          >
-            Search
-          </button>
+          <Button type="submit">Search</Button>
         </form>
 
         {/* Table */}
-        <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden">
+        <div className="bg-card rounded-xl shadow-xs border border-border overflow-hidden">
           {error && (
-            <div className="p-6 text-center text-sm text-red-500">{error}</div>
+            <div className="p-6 text-center text-sm text-destructive">
+              {error}
+            </div>
           )}
 
           {!error && (
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-slate-100 text-left text-xs font-semibold text-slate-400 uppercase tracking-wide">
+                <tr className="border-b border-border text-left text-xs font-semibold text-muted-foreground uppercase tracking-wide">
                   {COLUMNS.map((col) => (
                     <th
                       key={col.label}
                       className={`px-6 py-4 ${col.align === "right" ? "text-right" : ""} ${
                         col.key
-                          ? "cursor-pointer select-none hover:text-slate-600"
+                          ? "cursor-pointer select-none hover:text-foreground"
                           : ""
                       }`}
                       onClick={() => col.key && handleSort(col.key)}
@@ -160,21 +160,31 @@ export default function InventoryPage() {
                 </tr>
               </thead>
               <tbody>
-                {loading && (
-                  <tr>
-                    <td
-                      colSpan={5}
-                      className="px-6 py-12 text-center text-slate-400"
-                    >
-                      Loading…
-                    </td>
-                  </tr>
-                )}
+                {loading &&
+                  Array.from({ length: 8 }).map((_, i) => (
+                    <tr key={i} className="border-b border-border">
+                      <td className="px-6 py-3">
+                        <Skeleton className="h-4 w-40" />
+                      </td>
+                      <td className="px-6 py-3">
+                        <Skeleton className="h-4 w-24" />
+                      </td>
+                      <td className="px-6 py-3">
+                        <Skeleton className="h-4 w-16" />
+                      </td>
+                      <td className="px-6 py-3 text-right">
+                        <Skeleton className="h-4 w-10 ml-auto" />
+                      </td>
+                      <td className="px-6 py-3 text-right">
+                        <Skeleton className="h-4 w-10 ml-auto" />
+                      </td>
+                    </tr>
+                  ))}
                 {!loading && items.length === 0 && (
                   <tr>
                     <td
                       colSpan={5}
-                      className="px-6 py-12 text-center text-slate-400"
+                      className="px-6 py-12 text-center text-muted-foreground"
                     >
                       No items found
                     </td>
@@ -185,15 +195,15 @@ export default function InventoryPage() {
                     <tr
                       key={item.id}
                       onClick={() => router.push(`/inventory/${item.id}`)}
-                      className="border-b border-slate-50 hover:bg-slate-50 transition-colors cursor-pointer"
+                      className="border-b border-border hover:bg-muted/50 transition-colors cursor-pointer"
                     >
-                      <td className="px-6 py-3 font-medium text-slate-800">
+                      <td className="px-6 py-3 font-medium text-card-foreground">
                         {item.name}
                       </td>
-                      <td className="px-6 py-3 text-slate-500">
+                      <td className="px-6 py-3 text-muted-foreground">
                         {item.category}
                       </td>
-                      <td className="px-6 py-3 text-slate-500">
+                      <td className="px-6 py-3 text-muted-foreground">
                         {item.unit_of_measure}
                       </td>
                       <td className="px-6 py-3 text-right">
@@ -201,14 +211,14 @@ export default function InventoryPage() {
                           className={`font-semibold ${
                             item.reorder_point !== null &&
                             item.total_quantity <= item.reorder_point
-                              ? "text-red-500"
-                              : "text-slate-800"
+                              ? "text-destructive"
+                              : "text-card-foreground"
                           }`}
                         >
                           {item.total_quantity}
                         </span>
                       </td>
-                      <td className="px-6 py-3 text-right text-slate-400">
+                      <td className="px-6 py-3 text-right text-muted-foreground">
                         {item.reorder_point ?? "—"}
                       </td>
                     </tr>
@@ -220,27 +230,29 @@ export default function InventoryPage() {
 
         {/* Pagination */}
         {meta && meta.total_pages > 1 && (
-          <div className="flex items-center justify-between mt-4 text-sm text-slate-500">
+          <div className="flex items-center justify-between mt-4 text-sm text-muted-foreground">
             <span>
               {meta.total} items · page {meta.page} of {meta.total_pages}
             </span>
             <div className="flex gap-2">
-              <button
+              <Button
+                variant="outline"
+                size="icon"
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="p-2 rounded-lg border border-slate-200 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <ChevronLeft size={16} />
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
                 onClick={() =>
                   setPage((p) => Math.min(meta.total_pages, p + 1))
                 }
                 disabled={page === meta.total_pages}
-                className="p-2 rounded-lg border border-slate-200 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <ChevronRight size={16} />
-              </button>
+              </Button>
             </div>
           </div>
         )}
