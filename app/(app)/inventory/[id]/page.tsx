@@ -10,6 +10,7 @@ import {
   ShieldAlert,
   Barcode,
 } from "lucide-react"
+import { Skeleton } from "@/components/ui/skeleton"
 import {
   getItemStock,
   type GetItemStockResult,
@@ -17,13 +18,13 @@ import {
 } from "@/lib/services/inventory"
 
 const STATUS_STYLES: Record<string, string> = {
-  pending:        "bg-muted text-muted-foreground",
-  in_stock:       "bg-emerald-100 text-emerald-700",
+  pending: "bg-muted text-muted-foreground",
+  in_stock: "bg-emerald-100 text-emerald-700",
   partially_used: "bg-amber-100 text-amber-700",
-  flagged:        "bg-orange-100 text-orange-700",
-  transferred:    "bg-blue-100 text-blue-700",
-  consumed:       "bg-muted text-muted-foreground",
-  disposed:       "bg-destructive/10 text-destructive",
+  flagged: "bg-orange-100 text-orange-700",
+  transferred: "bg-blue-100 text-blue-700",
+  consumed: "bg-muted text-muted-foreground",
+  disposed: "bg-destructive/10 text-destructive",
 }
 
 function formatDate(iso: string | null) {
@@ -77,10 +78,67 @@ export default function ItemStockPage({
         </button>
 
         {loading && (
-          <div className="text-center text-muted-foreground py-24">Loading…</div>
+          <>
+            {/* Header card skeleton */}
+            <div className="bg-card rounded-xl border border-border p-6 mb-6">
+              <div className="flex items-start gap-4">
+                <Skeleton className="size-14 rounded-xl shrink-0" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-5 w-48" />
+                  <Skeleton className="h-4 w-32" />
+                </div>
+                <div className="text-right space-y-1">
+                  <Skeleton className="h-8 w-16 ml-auto" />
+                  <Skeleton className="h-3 w-20 ml-auto" />
+                </div>
+              </div>
+              <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-4">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <div key={i} className="space-y-1">
+                    <Skeleton className="h-3 w-16" />
+                    <Skeleton className="h-4 w-24" />
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* Table skeleton */}
+            <div className="bg-card rounded-xl border border-border overflow-hidden">
+              <div className="px-6 py-4 border-b border-border">
+                <Skeleton className="h-5 w-32" />
+              </div>
+              <table className="w-full text-sm">
+                <tbody>
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <tr key={i} className="border-b border-border">
+                      <td className="px-6 py-3">
+                        <Skeleton className="h-4 w-32" />
+                      </td>
+                      <td className="px-6 py-3">
+                        <Skeleton className="h-4 w-24" />
+                      </td>
+                      <td className="px-6 py-3">
+                        <Skeleton className="h-4 w-20" />
+                      </td>
+                      <td className="px-6 py-3">
+                        <Skeleton className="h-4 w-20" />
+                      </td>
+                      <td className="px-6 py-3">
+                        <Skeleton className="h-4 w-10 ml-auto" />
+                      </td>
+                      <td className="px-6 py-3">
+                        <Skeleton className="h-5 w-20 rounded-full" />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
 
-        {error && <div className="text-center text-destructive py-24">{error}</div>}
+        {error && (
+          <div className="text-center text-destructive py-24">{error}</div>
+        )}
 
         {!loading && !error && data && (
           <>
