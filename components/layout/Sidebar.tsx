@@ -2,8 +2,16 @@
 
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { LayoutDashboard, Package, Stethoscope, User } from "lucide-react"
+import { LayoutDashboard, Package, Stethoscope, User, Settings, LogOut } from "lucide-react"
 import { signOut } from "@/lib/services/auth"
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu"
 
 const NAV_ITEMS = [
   { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
@@ -62,23 +70,44 @@ export function Sidebar({ displayName, email }: SidebarProps) {
       </nav>
 
       <div className="p-4 mt-auto">
-        <button
-          onClick={handleSignOut}
-          className="flex items-center gap-3 p-3 w-full rounded-xl transition-colors hover:bg-muted text-left"
-          aria-label="Sign out"
-        >
-          <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-muted">
-            <User size={14} className="text-muted-foreground" />
-          </div>
-          <div className="hidden lg:block overflow-hidden">
-            <p className="text-xs font-bold text-foreground truncate">
-              {displayName}
-            </p>
-            <p className="text-[10px] text-muted-foreground truncate">
-              {email}
-            </p>
-          </div>
-        </button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              className="flex items-center gap-3 p-3 w-full rounded-xl transition-colors hover:bg-muted text-left"
+              aria-label="Account menu"
+            >
+              <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-muted">
+                <User size={14} className="text-muted-foreground" />
+              </div>
+              <div className="hidden lg:block overflow-hidden">
+                <p className="text-xs font-bold text-foreground truncate">
+                  {displayName}
+                </p>
+                <p className="text-[10px] text-muted-foreground truncate">
+                  {email}
+                </p>
+              </div>
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent side="top" align="start" className="w-56 mb-1">
+            <DropdownMenuLabel className="font-normal">
+              <p className="font-semibold text-foreground truncate">{displayName}</p>
+              <p className="text-xs text-muted-foreground truncate">{email}</p>
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Link href="/settings" className="cursor-pointer">
+                <Settings size={14} />
+                Settings
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem variant="destructive" onClick={handleSignOut}>
+              <LogOut size={14} />
+              Sign out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </aside>
   )
