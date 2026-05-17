@@ -4,6 +4,9 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Stethoscope, Loader2 } from "lucide-react"
 import { signInWithEmail } from "@/lib/services/auth"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
 export function LoginForm() {
   const [email, setEmail] = useState("")
@@ -27,61 +30,80 @@ export function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F9F9FF] flex items-center justify-center p-6">
-      <div className="w-full max-w-sm bg-white rounded-[2.5rem] p-10 shadow-sm border border-slate-100">
+    <div className="min-h-screen bg-background flex items-center justify-center p-6">
+      <div className="w-full max-w-sm rounded-xl border border-border bg-card p-10 shadow-sm">
+        {/* Brand */}
         <div className="flex items-center gap-3 mb-10">
-          <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shrink-0">
-            <Stethoscope size={22} />
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+            <Stethoscope size={20} />
           </div>
           <div>
-            <h1 className="text-slate-900 font-bold text-lg leading-tight">
+            <p className="text-base font-bold leading-tight text-card-foreground">
               DLD
-            </h1>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+            </p>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
               Clinical Ops
             </p>
           </div>
         </div>
 
-        <h2 className="text-xl font-bold text-slate-900 mb-2">Welcome back</h2>
-        <p className="text-sm text-slate-400 mb-8">
+        <h2 className="text-xl font-bold text-card-foreground mb-1">
+          Welcome back
+        </h2>
+        <p className="text-sm text-muted-foreground mb-8">
           Sign in to your clinic account
         </p>
 
+        {/* Error */}
         {error && (
-          <div className="mb-6 p-4 bg-rose-50 text-rose-600 text-sm rounded-2xl border border-rose-100">
+          <p
+            role="alert"
+            aria-live="polite"
+            className="mb-6 rounded-lg border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive"
+          >
             {error}
-          </div>
+          </p>
         )}
 
         <form onSubmit={handleEmailLogin} className="space-y-4">
-          <input
-            type="email"
-            placeholder="Email address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="w-full px-4 py-3 border border-slate-200 rounded-2xl text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-          />
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-[1.5rem] text-sm font-bold transition-all disabled:opacity-50 flex items-center justify-center gap-2"
-          >
+          <div className="space-y-1.5">
+            <Label htmlFor="email">Email address</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={loading}
+              required
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={loading}
+              required
+            />
+          </div>
+
+          <Button type="submit" disabled={loading} size="lg" className="w-full">
             {loading ? (
-              <Loader2 size={16} className="animate-spin" />
+              <>
+                <Loader2 size={16} className="animate-spin" />
+                Signing in…
+              </>
             ) : (
               "Sign in"
             )}
-          </button>
+          </Button>
         </form>
       </div>
     </div>
