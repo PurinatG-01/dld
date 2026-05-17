@@ -103,10 +103,11 @@ export default function ItemStockPage({
               </div>
             </div>
             {/* Table skeleton */}
-            <div className="bg-card rounded-xl border border-border overflow-hidden">
+            <div className="bg-card rounded-xl border border-border">
               <div className="px-6 py-4 border-b border-border">
                 <Skeleton className="h-5 w-32" />
               </div>
+              <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <tbody>
                   {Array.from({ length: 4 }).map((_, i) => (
@@ -133,6 +134,7 @@ export default function ItemStockPage({
                   ))}
                 </tbody>
               </table>
+              </div>
             </div>
           </>
         )}
@@ -251,7 +253,7 @@ export default function ItemStockPage({
             </div>
 
             {/* Stock batch table */}
-            <div className="bg-card rounded-xl shadow-xs border border-border overflow-hidden">
+            <div className="bg-card rounded-xl shadow-xs border border-border">
               <div className="px-6 py-4 border-b border-border">
                 <h2 className="font-semibold text-card-foreground">
                   Stock batches
@@ -266,6 +268,7 @@ export default function ItemStockPage({
                   No stock found at this branch
                 </div>
               ) : (
+                <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-border text-left text-xs font-semibold text-muted-foreground uppercase tracking-wide">
@@ -283,6 +286,7 @@ export default function ItemStockPage({
                     ))}
                   </tbody>
                 </table>
+                </div>
               )}
             </div>
           </>

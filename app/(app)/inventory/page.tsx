@@ -124,24 +124,26 @@ export default function InventoryPage() {
           </h1>
         </div>
 
-        {/* Search + Category filter */}
-        <div className="flex gap-2 mb-6">
-          <form onSubmit={handleSearch} className="flex gap-2 flex-1">
-            <div className="relative flex-1">
-              <Search
-                size={16}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-              />
-              <Input
-                type="text"
-                placeholder="Search items…"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="pl-9"
-              />
-            </div>
-            <Button type="submit">Search</Button>
-          </form>
+        {/* Search */}
+        <form onSubmit={handleSearch} className="flex gap-2 mb-3">
+          <div className="relative flex-1">
+            <Search
+              size={16}
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+            />
+            <Input
+              type="text"
+              placeholder="Search items…"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="pl-9"
+            />
+          </div>
+          <Button type="submit">Search</Button>
+        </form>
+
+        {/* Category filter */}
+        <div className="mb-6">
           <Select
             value={category || "__all__"}
             onValueChange={(val) => {
@@ -172,7 +174,7 @@ export default function InventoryPage() {
         </div>
 
         {/* Table */}
-        <div className="bg-card rounded-xl shadow-xs border border-border overflow-hidden">
+        <div className="bg-card rounded-xl shadow-xs border border-border">
           {error && (
             <div className="p-6 text-center text-sm text-destructive">
               {error}
@@ -180,6 +182,7 @@ export default function InventoryPage() {
           )}
 
           {!error && (
+            <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border text-left text-xs font-semibold text-muted-foreground uppercase tracking-wide">
@@ -285,6 +288,7 @@ export default function InventoryPage() {
                   ))}
               </tbody>
             </table>
+            </div>
           )}
         </div>
 
