@@ -26,16 +26,16 @@ export function Sidebar({ displayName, email }: SidebarProps) {
   }
 
   return (
-    <aside className="hidden md:flex md:w-20 lg:w-64 bg-white border-r border-slate-100 flex-col h-screen sticky top-0 shrink-0">
+    <aside className="hidden md:flex md:w-20 lg:w-64 bg-card border-r border-border flex-col h-screen sticky top-0 shrink-0">
       <div className="p-6 flex items-center gap-3">
-        <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shrink-0">
-          <Stethoscope size={22} />
+        <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+          <Stethoscope size={20} />
         </div>
         <div className="hidden lg:block">
-          <h1 className="text-slate-900 font-bold text-lg leading-tight">
+          <p className="font-bold text-base leading-tight text-card-foreground">
             DLD
-          </h1>
-          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+          </p>
+          <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
             Clinical Ops
           </p>
         </div>
@@ -48,10 +48,10 @@ export function Sidebar({ displayName, email }: SidebarProps) {
             <Link
               key={href}
               href={href}
-              className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
+              className={`flex items-center gap-3 p-3 rounded-xl transition-colors ${
                 active
-                  ? "bg-indigo-50 text-indigo-600 font-semibold"
-                  : "text-slate-400 hover:bg-slate-50 hover:text-slate-600"
+                  ? "bg-primary/10 text-primary font-semibold"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
               }`}
             >
               <Icon size={20} />
@@ -62,31 +62,21 @@ export function Sidebar({ displayName, email }: SidebarProps) {
       </nav>
 
       <div className="p-4 mt-auto">
-        <div className="bg-slate-50 rounded-2xl p-4 hidden lg:block border border-slate-100 mb-4">
-          <p className="text-[11px] text-slate-500 font-medium mb-2">
-            Clinic Performance
-          </p>
-          <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
-            <div className="w-[85%] h-full bg-indigo-500" />
-          </div>
-          <p className="text-[10px] text-slate-400 mt-2 font-bold uppercase">
-            85% Capacity
-          </p>
-        </div>
-
         <button
           onClick={handleSignOut}
-          className="flex items-center gap-3 p-3 w-full hover:bg-slate-50 rounded-xl transition-all text-left"
+          className="flex items-center gap-3 p-3 w-full rounded-xl transition-colors hover:bg-muted text-left"
           aria-label="Sign out"
         >
-          <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center shrink-0">
-            <User size={14} className="text-slate-400" />
+          <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-muted">
+            <User size={14} className="text-muted-foreground" />
           </div>
           <div className="hidden lg:block overflow-hidden">
-            <p className="text-xs font-bold text-slate-800 truncate">
+            <p className="text-xs font-bold text-foreground truncate">
               {displayName}
             </p>
-            <p className="text-[10px] text-slate-400 truncate">{email}</p>
+            <p className="text-[10px] text-muted-foreground truncate">
+              {email}
+            </p>
           </div>
         </button>
       </div>

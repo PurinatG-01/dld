@@ -21,7 +21,7 @@ export default async function AppLayout({
   const email = profile?.email ?? user.email ?? ""
 
   return (
-    <div className="min-h-screen bg-[#F9F9FF] flex font-sans selection:bg-indigo-100">
+    <div className="min-h-screen bg-background flex font-sans selection:bg-primary/10">
       <Sidebar displayName={displayName} email={email} />
       <main className="flex-1 min-w-0 pb-20 md:pb-0">{children}</main>
       <BottomNav />

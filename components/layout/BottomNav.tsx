@@ -13,7 +13,7 @@ export function BottomNav() {
   const pathname = usePathname()
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-100 z-40 pb-safe">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-card border-t border-border z-40 pb-safe">
       <div className="flex items-center justify-around h-16 px-2">
         {TABS.map(({ href, icon: Icon, label }) => {
           const active = pathname.startsWith(href)
@@ -21,8 +21,8 @@ export function BottomNav() {
             <Link
               key={href}
               href={href}
-              className={`flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-all ${
-                active ? "text-indigo-600" : "text-slate-400"
+              className={`flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-colors ${
+                active ? "text-primary" : "text-muted-foreground"
               }`}
             >
               <Icon size={22} />
