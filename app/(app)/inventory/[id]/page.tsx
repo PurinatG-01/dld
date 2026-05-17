@@ -108,32 +108,32 @@ export default function ItemStockPage({
                 <Skeleton className="h-5 w-32" />
               </div>
               <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <tbody>
-                  {Array.from({ length: 4 }).map((_, i) => (
-                    <tr key={i} className="border-b border-border">
-                      <td className="px-6 py-3">
-                        <Skeleton className="h-4 w-32" />
-                      </td>
-                      <td className="px-6 py-3">
-                        <Skeleton className="h-4 w-24" />
-                      </td>
-                      <td className="px-6 py-3">
-                        <Skeleton className="h-4 w-20" />
-                      </td>
-                      <td className="px-6 py-3">
-                        <Skeleton className="h-4 w-20" />
-                      </td>
-                      <td className="px-6 py-3">
-                        <Skeleton className="h-4 w-10 ml-auto" />
-                      </td>
-                      <td className="px-6 py-3">
-                        <Skeleton className="h-5 w-20 rounded-full" />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                <table className="w-full text-sm">
+                  <tbody>
+                    {Array.from({ length: 4 }).map((_, i) => (
+                      <tr key={i} className="border-b border-border">
+                        <td className="px-6 py-3">
+                          <Skeleton className="h-4 w-32" />
+                        </td>
+                        <td className="px-6 py-3">
+                          <Skeleton className="h-4 w-24" />
+                        </td>
+                        <td className="px-6 py-3">
+                          <Skeleton className="h-4 w-20" />
+                        </td>
+                        <td className="px-6 py-3">
+                          <Skeleton className="h-4 w-20" />
+                        </td>
+                        <td className="px-6 py-3">
+                          <Skeleton className="h-4 w-10 ml-auto" />
+                        </td>
+                        <td className="px-6 py-3">
+                          <Skeleton className="h-5 w-20 rounded-full" />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
           </>
@@ -269,23 +269,23 @@ export default function ItemStockPage({
                 </div>
               ) : (
                 <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-border text-left text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                      <th className="px-6 py-4">Location</th>
-                      <th className="px-6 py-4">Lot / Serial</th>
-                      <th className="px-6 py-4">Expiry</th>
-                      <th className="px-6 py-4">Received</th>
-                      <th className="px-6 py-4 text-right">Qty</th>
-                      <th className="px-6 py-4">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {data.stocks.map((stock) => (
-                      <StockRow key={stock.id} stock={stock} />
-                    ))}
-                  </tbody>
-                </table>
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-border text-left text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                        <th className="px-6 py-4">Location</th>
+                        <th className="px-6 py-4">Lot / Serial</th>
+                        <th className="px-6 py-4">Expiry</th>
+                        <th className="px-6 py-4">Received</th>
+                        <th className="px-6 py-4 text-right">Qty</th>
+                        <th className="px-6 py-4">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {data.stocks.map((stock) => (
+                        <StockRow key={stock.id} stock={stock} />
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               )}
             </div>

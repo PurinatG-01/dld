@@ -26,7 +26,9 @@ export default async function AccountPage() {
           <User size={24} className="text-muted-foreground" />
         </div>
         <div className="min-w-0">
-          <p className="font-semibold text-card-foreground truncate">{displayName}</p>
+          <p className="font-semibold text-card-foreground truncate">
+            {displayName}
+          </p>
           <p className="text-sm text-muted-foreground truncate">{email}</p>
         </div>
       </div>

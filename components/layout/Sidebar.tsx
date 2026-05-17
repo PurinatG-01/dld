@@ -2,7 +2,14 @@
 
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { LayoutDashboard, Package, Stethoscope, User, Settings, LogOut } from "lucide-react"
+import {
+  LayoutDashboard,
+  Package,
+  Stethoscope,
+  User,
+  Settings,
+  LogOut,
+} from "lucide-react"
 import { signOut } from "@/lib/services/auth"
 import {
   DropdownMenu,
@@ -91,7 +98,9 @@ export function Sidebar({ displayName, email }: SidebarProps) {
           </DropdownMenuTrigger>
           <DropdownMenuContent side="top" align="start" className="w-56 mb-1">
             <DropdownMenuLabel className="font-normal">
-              <p className="font-semibold text-foreground truncate">{displayName}</p>
+              <p className="font-semibold text-foreground truncate">
+                {displayName}
+              </p>
               <p className="text-xs text-muted-foreground truncate">{email}</p>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />

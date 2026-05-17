@@ -183,111 +183,111 @@ export default function InventoryPage() {
 
           {!error && (
             <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border text-left text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                  {COLUMNS.map((col) => (
-                    <th
-                      key={col.label}
-                      className={`px-6 py-4 ${col.align === "right" ? "text-right" : ""} ${
-                        col.key
-                          ? "cursor-pointer select-none hover:text-foreground"
-                          : ""
-                      }`}
-                      onClick={() => col.key && handleSort(col.key)}
-                    >
-                      {col.label}
-                      {col.key && <SortIcon col={col.key} />}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {loading &&
-                  Array.from({ length: 8 }).map((_, i) => (
-                    <tr key={i} className="border-b border-border">
-                      <td className="px-4 py-3 w-14">
-                        <Skeleton className="size-9 rounded-xl" />
-                      </td>
-                      <td className="px-6 py-3">
-                        <Skeleton className="h-4 w-40" />
-                      </td>
-                      <td className="px-6 py-3">
-                        <Skeleton className="h-4 w-24" />
-                      </td>
-                      <td className="px-6 py-3">
-                        <Skeleton className="h-4 w-16" />
-                      </td>
-                      <td className="px-6 py-3 text-right">
-                        <Skeleton className="h-4 w-10 ml-auto" />
-                      </td>
-                      <td className="px-6 py-3 text-right">
-                        <Skeleton className="h-4 w-10 ml-auto" />
-                      </td>
-                    </tr>
-                  ))}
-                {!loading && items.length === 0 && (
-                  <tr>
-                    <td
-                      colSpan={6}
-                      className="px-6 py-12 text-center text-muted-foreground"
-                    >
-                      No items found
-                    </td>
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border text-left text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                    {COLUMNS.map((col) => (
+                      <th
+                        key={col.label}
+                        className={`px-6 py-4 ${col.align === "right" ? "text-right" : ""} ${
+                          col.key
+                            ? "cursor-pointer select-none hover:text-foreground"
+                            : ""
+                        }`}
+                        onClick={() => col.key && handleSort(col.key)}
+                      >
+                        {col.label}
+                        {col.key && <SortIcon col={col.key} />}
+                      </th>
+                    ))}
                   </tr>
-                )}
-                {!loading &&
-                  items.map((item) => (
-                    <tr
-                      key={item.id}
-                      onClick={() => router.push(`/inventory/${item.id}`)}
-                      className="border-b border-border hover:bg-muted/50 transition-colors cursor-pointer"
-                    >
-                      <td className="px-4 py-3 w-14">
-                        {(() => {
-                          const meta = CATEGORY_META[item.category]
-                          if (!meta)
-                            return (
-                              <span className="inline-flex size-9 rounded-xl bg-muted" />
-                            )
-                          const Icon = meta.icon
-                          return (
-                            <span
-                              className={`inline-flex items-center justify-center size-9 rounded-xl ${meta.bg}`}
-                            >
-                              <Icon size={18} className={meta.color} />
-                            </span>
-                          )
-                        })()}
-                      </td>
-                      <td className="px-6 py-3 font-medium text-card-foreground">
-                        {item.name}
-                      </td>
-                      <td className="px-6 py-3 text-muted-foreground">
-                        {item.category}
-                      </td>
-                      <td className="px-6 py-3 text-muted-foreground">
-                        {item.unit_of_measure}
-                      </td>
-                      <td className="px-6 py-3 text-right">
-                        <span
-                          className={`font-semibold ${
-                            item.reorder_point !== null &&
-                            item.total_quantity <= item.reorder_point
-                              ? "text-destructive"
-                              : "text-card-foreground"
-                          }`}
-                        >
-                          {item.total_quantity}
-                        </span>
-                      </td>
-                      <td className="px-6 py-3 text-right text-muted-foreground">
-                        {item.reorder_point ?? "—"}
+                </thead>
+                <tbody>
+                  {loading &&
+                    Array.from({ length: 8 }).map((_, i) => (
+                      <tr key={i} className="border-b border-border">
+                        <td className="px-4 py-3 w-14">
+                          <Skeleton className="size-9 rounded-xl" />
+                        </td>
+                        <td className="px-6 py-3">
+                          <Skeleton className="h-4 w-40" />
+                        </td>
+                        <td className="px-6 py-3">
+                          <Skeleton className="h-4 w-24" />
+                        </td>
+                        <td className="px-6 py-3">
+                          <Skeleton className="h-4 w-16" />
+                        </td>
+                        <td className="px-6 py-3 text-right">
+                          <Skeleton className="h-4 w-10 ml-auto" />
+                        </td>
+                        <td className="px-6 py-3 text-right">
+                          <Skeleton className="h-4 w-10 ml-auto" />
+                        </td>
+                      </tr>
+                    ))}
+                  {!loading && items.length === 0 && (
+                    <tr>
+                      <td
+                        colSpan={6}
+                        className="px-6 py-12 text-center text-muted-foreground"
+                      >
+                        No items found
                       </td>
                     </tr>
-                  ))}
-              </tbody>
-            </table>
+                  )}
+                  {!loading &&
+                    items.map((item) => (
+                      <tr
+                        key={item.id}
+                        onClick={() => router.push(`/inventory/${item.id}`)}
+                        className="border-b border-border hover:bg-muted/50 transition-colors cursor-pointer"
+                      >
+                        <td className="px-4 py-3 w-14">
+                          {(() => {
+                            const meta = CATEGORY_META[item.category]
+                            if (!meta)
+                              return (
+                                <span className="inline-flex size-9 rounded-xl bg-muted" />
+                              )
+                            const Icon = meta.icon
+                            return (
+                              <span
+                                className={`inline-flex items-center justify-center size-9 rounded-xl ${meta.bg}`}
+                              >
+                                <Icon size={18} className={meta.color} />
+                              </span>
+                            )
+                          })()}
+                        </td>
+                        <td className="px-6 py-3 font-medium text-card-foreground">
+                          {item.name}
+                        </td>
+                        <td className="px-6 py-3 text-muted-foreground">
+                          {item.category}
+                        </td>
+                        <td className="px-6 py-3 text-muted-foreground">
+                          {item.unit_of_measure}
+                        </td>
+                        <td className="px-6 py-3 text-right">
+                          <span
+                            className={`font-semibold ${
+                              item.reorder_point !== null &&
+                              item.total_quantity <= item.reorder_point
+                                ? "text-destructive"
+                                : "text-card-foreground"
+                            }`}
+                          >
+                            {item.total_quantity}
+                          </span>
+                        </td>
+                        <td className="px-6 py-3 text-right text-muted-foreground">
+                          {item.reorder_point ?? "—"}
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
             </div>
           )}
         </div>
