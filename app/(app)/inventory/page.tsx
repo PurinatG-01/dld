@@ -10,9 +10,17 @@ import {
   ChevronUp,
   ChevronDown,
 } from "lucide-react"
+import { CATEGORY_META } from "@/lib/category-meta"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import {
   listItems,
   type InventoryItem,
@@ -30,6 +38,7 @@ type Column = {
 }
 
 const COLUMNS: Column[] = [
+  { key: null, label: "" },
   { key: "name", label: "Name" },
   { key: "category", label: "Category" },
   { key: "unit_of_measure", label: "Unit" },
@@ -44,13 +53,14 @@ export default function InventoryPage() {
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState("")
   const [query, setQuery] = useState("")
+  const [category, setCategory] = useState("")
   const [sortBy, setSortBy] = useState<SortBy>("name")
   const [sortDir, setSortDir] = useState<SortDir>("asc")
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   const load = useCallback(
-    async (p: number, q: string, sb: SortBy, sd: SortDir) => {
+    async (p: number, q: string, cat: string, sb: SortBy, sd: SortDir) => {
       setLoading(true)
       setError(null)
       try {
@@ -58,6 +68,7 @@ export default function InventoryPage() {
           page: p,
           limit: PAGE_SIZE,
           search: q || undefined,
+          category: cat || undefined,
           sort_by: sb,
           sort_dir: sd,
         })
@@ -73,8 +84,8 @@ export default function InventoryPage() {
   )
 
   useEffect(() => {
-    load(page, query, sortBy, sortDir)
-  }, [page, query, sortBy, sortDir, load])
+    load(page, query, category, sortBy, sortDir)
+  }, [page, query, category, sortBy, sortDir, load])
 
   function handleSearch(e: React.FormEvent) {
     e.preventDefault()
@@ -113,23 +124,52 @@ export default function InventoryPage() {
           </h1>
         </div>
 
-        {/* Search */}
-        <form onSubmit={handleSearch} className="flex gap-2 mb-6">
-          <div className="relative flex-1">
-            <Search
-              size={16}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-            />
-            <Input
-              type="text"
-              placeholder="Search items…"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="pl-9"
-            />
-          </div>
-          <Button type="submit">Search</Button>
-        </form>
+        {/* Search + Category filter */}
+        <div className="flex gap-2 mb-6">
+          <form onSubmit={handleSearch} className="flex gap-2 flex-1">
+            <div className="relative flex-1">
+              <Search
+                size={16}
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+              />
+              <Input
+                type="text"
+                placeholder="Search items…"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="pl-9"
+              />
+            </div>
+            <Button type="submit">Search</Button>
+          </form>
+          <Select
+            value={category || "__all__"}
+            onValueChange={(val) => {
+              setCategory(val === "__all__" ? "" : val)
+              setPage(1)
+            }}
+          >
+            <SelectTrigger className="w-56">
+              <SelectValue placeholder="All categories" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="__all__">All categories</SelectItem>
+              {Object.entries(CATEGORY_META).map(([label, meta]) => {
+                const Icon = meta.icon
+                return (
+                  <SelectItem key={label} value={label}>
+                    <span
+                      className={`inline-flex items-center justify-center size-5 rounded ${meta.bg}`}
+                    >
+                      <Icon size={12} className={meta.color} />
+                    </span>
+                    {label}
+                  </SelectItem>
+                )
+              })}
+            </SelectContent>
+          </Select>
+        </div>
 
         {/* Table */}
         <div className="bg-card rounded-xl shadow-xs border border-border overflow-hidden">
@@ -163,6 +203,9 @@ export default function InventoryPage() {
                 {loading &&
                   Array.from({ length: 8 }).map((_, i) => (
                     <tr key={i} className="border-b border-border">
+                      <td className="px-4 py-3 w-14">
+                        <Skeleton className="size-9 rounded-xl" />
+                      </td>
                       <td className="px-6 py-3">
                         <Skeleton className="h-4 w-40" />
                       </td>
@@ -183,7 +226,7 @@ export default function InventoryPage() {
                 {!loading && items.length === 0 && (
                   <tr>
                     <td
-                      colSpan={5}
+                      colSpan={6}
                       className="px-6 py-12 text-center text-muted-foreground"
                     >
                       No items found
@@ -197,6 +240,23 @@ export default function InventoryPage() {
                       onClick={() => router.push(`/inventory/${item.id}`)}
                       className="border-b border-border hover:bg-muted/50 transition-colors cursor-pointer"
                     >
+                      <td className="px-4 py-3 w-14">
+                        {(() => {
+                          const meta = CATEGORY_META[item.category]
+                          if (!meta)
+                            return (
+                              <span className="inline-flex size-9 rounded-xl bg-muted" />
+                            )
+                          const Icon = meta.icon
+                          return (
+                            <span
+                              className={`inline-flex items-center justify-center size-9 rounded-xl ${meta.bg}`}
+                            >
+                              <Icon size={18} className={meta.color} />
+                            </span>
+                          )
+                        })()}
+                      </td>
                       <td className="px-6 py-3 font-medium text-card-foreground">
                         {item.name}
                       </td>

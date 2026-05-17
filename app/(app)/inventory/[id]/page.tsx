@@ -11,6 +11,7 @@ import {
   Barcode,
 } from "lucide-react"
 import { Skeleton } from "@/components/ui/skeleton"
+import { CATEGORY_META } from "@/lib/category-meta"
 import {
   getItemStock,
   type GetItemStockResult,
@@ -145,9 +146,24 @@ export default function ItemStockPage({
             {/* Item header card */}
             <div className="bg-card rounded-xl shadow-xs border border-border p-6 mb-6">
               <div className="flex items-start gap-4">
-                <div className="p-3 rounded-xl bg-primary/10">
-                  <Package size={24} className="text-primary" />
-                </div>
+                {(() => {
+                  const catMeta = CATEGORY_META[data.item.category]
+                  if (catMeta) {
+                    const Icon = catMeta.icon
+                    return (
+                      <span
+                        className={`inline-flex items-center justify-center size-14 rounded-xl shrink-0 ${catMeta.bg}`}
+                      >
+                        <Icon size={26} className={catMeta.color} />
+                      </span>
+                    )
+                  }
+                  return (
+                    <div className="p-3 rounded-xl bg-primary/10 shrink-0">
+                      <Package size={24} className="text-primary" />
+                    </div>
+                  )
+                })()}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <h1 className="text-xl font-bold text-card-foreground">

@@ -115,6 +115,7 @@ export async function listItems(params: {
   page?: number
   limit?: number
   search?: string
+  category?: string
   branch_id?: string
   sort_by?: SortBy
   sort_dir?: SortDir
@@ -133,6 +134,7 @@ export async function listItems(params: {
   if (params.page) url.searchParams.set("page", String(params.page))
   if (params.limit) url.searchParams.set("limit", String(params.limit))
   if (params.search) url.searchParams.set("search", params.search)
+  if (params.category) url.searchParams.set("category", params.category)
   if (params.branch_id) url.searchParams.set("branch_id", params.branch_id)
   if (params.sort_by) url.searchParams.set("sort_by", params.sort_by)
   if (params.sort_dir) url.searchParams.set("sort_dir", params.sort_dir)
