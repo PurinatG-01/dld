@@ -34,7 +34,7 @@ export function ScannerDesktopPanel() {
   }
 
   return (
-    <aside className="hidden md:flex flex-col w-[420px] border-l border-border bg-card h-screen fixed top-0 right-0 z-40 shadow-2xl">
+    <aside className="hidden lg:flex flex-col w-[420px] border-l border-border bg-card h-screen fixed top-0 right-0 z-40 shadow-2xl">
       {/* Header */}
       <div className="flex items-center justify-between px-5 py-4 border-b border-border bg-muted/30 shrink-0">
         <div className="flex items-center gap-2">
