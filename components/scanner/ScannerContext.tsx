@@ -121,8 +121,8 @@ export function ScannerProvider({ children }: { children: ReactNode }) {
   const toggle = useCallback(() => setIsOpen((v) => !v), [])
 
   useEffect(() => {
-    document.documentElement.classList.toggle("overflow-hidden", isOpen)
-    return () => document.documentElement.classList.remove("overflow-hidden")
+    document.documentElement.style.overflow = isOpen ? "hidden" : ""
+    return () => { document.documentElement.style.overflow = "" }
   }, [isOpen])
 
   const simulateScan = useCallback(() => {
