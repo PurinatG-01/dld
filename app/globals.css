@@ -72,6 +72,13 @@
   }
 }
 
+/* Scanner laser-beam sweep animation */
+@keyframes scanner-beam {
+  0%, 100% { top: 10%; opacity: 0; }
+  10%, 90% { opacity: 1; }
+  50% { top: 90%; }
+}
+
 /*
  * SHADCN COLOUR TOKENS — single source of truth
  * ──────────────────────────────────────────────────────────────────────────

@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server"
 import { getUserProfile } from "@/lib/services/user"
 import { Sidebar } from "@/components/layout/Sidebar"
 import { BottomNav } from "@/components/layout/BottomNav"
+import { ScannerProvider } from "@/components/scanner/ScannerContext"
+import { ScannerMobileSheet } from "@/components/scanner/ScannerMobileSheet"
 
 export default async function AppLayout({
   children,
@@ -21,10 +23,13 @@ export default async function AppLayout({
   const email = profile?.email ?? user.email ?? ""
 
   return (
-    <div className="min-h-screen bg-background flex font-sans selection:bg-primary/10">
-      <Sidebar displayName={displayName} email={email} />
-      <main className="flex-1 min-w-0 pb-20 md:pb-0">{children}</main>
-      <BottomNav />
-    </div>
+    <ScannerProvider>
+      <div className="min-h-screen bg-background flex font-sans selection:bg-primary/10">
+        <Sidebar displayName={displayName} email={email} />
+        <main className="flex-1 min-w-0 pb-20 md:pb-0">{children}</main>
+        <BottomNav />
+        <ScannerMobileSheet />
+      </div>
+    </ScannerProvider>
   )
 }

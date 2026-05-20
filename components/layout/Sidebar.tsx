@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation"
 import {
   LayoutDashboard,
   Package,
+  ScanLine,
   Stethoscope,
   User,
   Settings,
@@ -19,6 +20,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu"
+import { useScannerContext } from "@/components/scanner/ScannerContext"
 
 const NAV_ITEMS = [
   { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
@@ -33,6 +35,7 @@ interface SidebarProps {
 export function Sidebar({ displayName, email }: SidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
+  const { isOpen: scannerOpen, toggle: toggleScanner } = useScannerContext()
 
   const handleSignOut = async () => {
     await signOut()
@@ -56,7 +59,29 @@ export function Sidebar({ displayName, email }: SidebarProps) {
         </div>
       </div>
 
-      <nav className="flex-1 px-4 space-y-1 mt-4">
+      {/* Scanner action */}
+      <div className="px-4 mb-1">
+        <p className="hidden lg:block text-[10px] font-bold tracking-wider text-muted-foreground uppercase mb-1 px-3">
+          Actions
+        </p>
+        <button
+          onClick={toggleScanner}
+          className={`flex items-center gap-3 p-3 w-full rounded-xl transition-all text-sm font-semibold ${
+            scannerOpen
+              ? "bg-primary text-primary-foreground shadow-sm"
+              : "text-muted-foreground hover:bg-muted hover:text-foreground"
+          }`}
+        >
+          <ScanLine size={20} className={scannerOpen ? "animate-pulse" : ""} />
+          <span className="hidden lg:block">
+            {scannerOpen ? "Close Scanner" : "Scan Item"}
+          </span>
+        </button>
+      </div>
+
+      <div className="mx-4 mb-3 border-t border-border" />
+
+      <nav className="flex-1 px-4 space-y-1">
         {NAV_ITEMS.map(({ href, icon: Icon, label }) => {
           const active = pathname.startsWith(href)
           return (
