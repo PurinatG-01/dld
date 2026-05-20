@@ -4,6 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useState,
   type ReactNode,
 } from "react"
@@ -118,6 +119,11 @@ export function ScannerProvider({ children }: { children: ReactNode }) {
   const open = useCallback(() => setIsOpen(true), [])
   const close = useCallback(() => setIsOpen(false), [])
   const toggle = useCallback(() => setIsOpen((v) => !v), [])
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("overflow-hidden", isOpen)
+    return () => document.documentElement.classList.remove("overflow-hidden")
+  }, [isOpen])
 
   const simulateScan = useCallback(() => {
     if (scanStatus !== "idle") return
