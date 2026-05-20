@@ -11,6 +11,7 @@ import {
   X,
 } from "lucide-react"
 import { CATEGORY_META } from "@/lib/category-meta"
+import { useViewportClass } from "@/lib/hooks/useViewportClass"
 import { useScannerContext } from "./ScannerContext"
 
 export function ScannerDesktopPanel() {
@@ -25,8 +26,10 @@ export function ScannerDesktopPanel() {
     totalUnits,
     clearSession,
   } = useScannerContext()
+  const vc = useViewportClass()
 
-  if (!isOpen) return null
+  // Tablet (iPad any orientation) uses ScannerMobileSheet instead
+  if (!isOpen || vc !== "desktop") return null
 
   const handleApply = () => {
     // TODO: call stock-movement API
@@ -34,7 +37,7 @@ export function ScannerDesktopPanel() {
   }
 
   return (
-    <aside className="hidden lg:flex flex-col w-[420px] border-l border-border bg-card h-screen fixed top-0 right-0 z-40 shadow-2xl">
+    <aside className="flex flex-col w-[420px] border-l border-border bg-card h-screen fixed top-0 right-0 z-40 shadow-2xl">
       {/* Header */}
       <div className="flex items-center justify-between px-5 py-4 border-b border-border bg-muted/30 shrink-0">
         <div className="flex items-center gap-2">
