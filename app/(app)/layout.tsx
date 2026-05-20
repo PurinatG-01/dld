@@ -4,7 +4,6 @@ import { getUserProfile } from "@/lib/services/user"
 import { Sidebar } from "@/components/layout/Sidebar"
 import { BottomNav } from "@/components/layout/BottomNav"
 import { ScannerProvider } from "@/components/scanner/ScannerContext"
-import { ScannerDesktopPanel } from "@/components/scanner/ScannerDesktopPanel"
 import { ScannerMobileSheet } from "@/components/scanner/ScannerMobileSheet"
 
 export default async function AppLayout({
@@ -28,7 +27,6 @@ export default async function AppLayout({
       <div className="min-h-screen bg-background flex font-sans selection:bg-primary/10">
         <Sidebar displayName={displayName} email={email} />
         <main className="flex-1 min-w-0 pb-20 md:pb-0">{children}</main>
-        <ScannerDesktopPanel />
         <BottomNav />
         <ScannerMobileSheet />
       </div>

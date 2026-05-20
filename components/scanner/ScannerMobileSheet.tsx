@@ -11,7 +11,7 @@ import {
   X,
 } from "lucide-react"
 import { CATEGORY_META } from "@/lib/category-meta"
-import { useViewportClass } from "@/lib/hooks/useViewportClass"
+import { useIsLandscape } from "@/lib/hooks/useIsLandscape"
 import { useScannerContext, type ScannedItem } from "./ScannerContext"
 
 // ─── shared sub-components ────────────────────────────────────────────────────
@@ -19,16 +19,13 @@ import { useScannerContext, type ScannedItem } from "./ScannerContext"
 function CameraViewfinder({
   scanStatus,
   onSimulate,
-  size = "md",
 }: {
   scanStatus: ReturnType<typeof useScannerContext>["scanStatus"]
   onSimulate: () => void
-  size?: "sm" | "md"
 }) {
-  const reticle = size === "sm" ? "w-56 h-56" : "w-72 h-72"
   return (
     <div className="flex flex-col items-center justify-center gap-6 px-6 w-full">
-      <div className={`relative ${reticle} max-w-full`}>
+      <div className="relative w-64 h-64 max-w-full">
         <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-white/80 rounded-tl-xl" />
         <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-white/80 rounded-tr-xl" />
         <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-white/80 rounded-bl-xl" />
@@ -125,15 +122,18 @@ function ItemRow({
   )
 }
 
-// ─── phone layout ─────────────────────────────────────────────────────────────
+// ─── portrait layout: camera fills screen, items slide up as bottom sheet ─────
 
-function PhoneOverlay({
-  onClose,
-}: {
-  onClose: () => void
-}) {
-  const { scanStatus, scannedItems, simulateScan, updateQty, removeItem, totalUnits, clearSession } =
-    useScannerContext()
+function PortraitOverlay({ onClose }: { onClose: () => void }) {
+  const {
+    scanStatus,
+    scannedItems,
+    simulateScan,
+    updateQty,
+    removeItem,
+    totalUnits,
+    clearSession,
+  } = useScannerContext()
 
   return (
     <div className="flex flex-col h-full bg-slate-950">
@@ -159,12 +159,12 @@ function PhoneOverlay({
         <div className="w-10" aria-hidden />
       </div>
 
-      {/* camera */}
+      {/* camera — fills remaining space above the sheet */}
       <div className="flex-1 flex items-center justify-center -mt-12">
-        <CameraViewfinder scanStatus={scanStatus} onSimulate={simulateScan} size="sm" />
+        <CameraViewfinder scanStatus={scanStatus} onSimulate={simulateScan} />
       </div>
 
-      {/* bottom sheet */}
+      {/* bottom sheet — collapses when empty, expands to 50% when items present */}
       <div
         className={`bg-card rounded-t-3xl shadow-[0_-10px_40px_rgba(0,0,0,0.3)] flex flex-col transition-[height] duration-300 shrink-0 ${
           scannedItems.length > 0 ? "h-[50vh]" : "h-[15vh]"
@@ -216,19 +216,22 @@ function PhoneOverlay({
   )
 }
 
-// ─── tablet layout (70 / 30 horizontal split) ─────────────────────────────────
+// ─── landscape layout: camera left 70%, detail panel right 30% ───────────────
 
-function TabletOverlay({
-  onClose,
-}: {
-  onClose: () => void
-}) {
-  const { scanStatus, scannedItems, simulateScan, updateQty, removeItem, totalUnits, clearSession } =
-    useScannerContext()
+function LandscapeOverlay({ onClose }: { onClose: () => void }) {
+  const {
+    scanStatus,
+    scannedItems,
+    simulateScan,
+    updateQty,
+    removeItem,
+    totalUnits,
+    clearSession,
+  } = useScannerContext()
 
   return (
     <div className="flex flex-row h-full">
-      {/* Left — camera (70%) */}
+      {/* Camera — 70% */}
       <div className="flex flex-col bg-slate-950" style={{ width: "70%" }}>
         <div className="flex items-center gap-3 p-5 bg-gradient-to-b from-black/60 to-transparent text-white shrink-0">
           <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse shrink-0" />
@@ -238,23 +241,19 @@ function TabletOverlay({
               : "Point camera at barcode"}
           </span>
         </div>
-
         <div className="flex-1 flex items-center justify-center">
           <CameraViewfinder scanStatus={scanStatus} onSimulate={simulateScan} />
         </div>
       </div>
 
-      {/* Right — detail panel (30%) */}
+      {/* Detail panel — 30% */}
       <div
         className="flex flex-col bg-card border-l border-border"
         style={{ width: "30%" }}
       >
-        {/* panel header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-border shrink-0">
           <div>
-            <h3 className="font-bold text-foreground text-sm">
-              Scanned Items
-            </h3>
+            <h3 className="font-bold text-foreground text-sm">Scanned Items</h3>
             <p className="text-xs text-muted-foreground mt-0.5">
               {scannedItems.length === 0
                 ? "Scan a barcode to begin"
@@ -312,31 +311,25 @@ function TabletOverlay({
 
 export function ScannerMobileSheet() {
   const { isOpen, open, close } = useScannerContext()
-  const vc = useViewportClass()
-
-  // Desktop is handled entirely by ScannerDesktopPanel
-  if (vc === "desktop") return null
+  const isLandscape = useIsLandscape()
 
   return (
     <>
-      {/* FAB — phone only; tablet uses the sidebar Scan Item button */}
-      {vc === "phone" && (
-        <button
-          onClick={open}
-          aria-label="Open barcode scanner"
-          className="fixed bottom-20 right-4 z-50 w-14 h-14 bg-primary rounded-2xl flex items-center justify-center text-primary-foreground shadow-[0_8px_30px_rgba(0,0,0,0.25)] active:scale-95 transition-transform"
-        >
-          <ScanLine size={24} />
-        </button>
-      )}
+      {/* FAB — mobile only; sidebar button handles tablet/desktop */}
+      <button
+        onClick={open}
+        aria-label="Open barcode scanner"
+        className="md:hidden fixed bottom-20 right-4 z-50 w-14 h-14 bg-primary rounded-2xl flex items-center justify-center text-primary-foreground shadow-[0_8px_30px_rgba(0,0,0,0.25)] active:scale-95 transition-transform"
+      >
+        <ScanLine size={24} />
+      </button>
 
-      {/* Full-screen overlay */}
       {isOpen && (
         <div className="fixed inset-0 z-[60]">
-          {vc === "phone" ? (
-            <PhoneOverlay onClose={close} />
+          {isLandscape ? (
+            <LandscapeOverlay onClose={close} />
           ) : (
-            <TabletOverlay onClose={close} />
+            <PortraitOverlay onClose={close} />
           )}
         </div>
       )}
